@@ -1,14 +1,93 @@
-<script>
-  var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>正在前往應用商店...</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      text-align: center;
+      padding: 40px 20px;
+      color: #333;
+    }
+    .btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 14px 28px;
+      font-size: 16px;
+      font-weight: bold;
+      color: #fff;
+      background-color: #007AFF;
+      text-decoration: none;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .notice {
+      display: none;
+      margin-top: 20px;
+      padding: 12px;
+      background-color: #FFF3CD;
+      color: #856404;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
 
-  if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-    // iOS 系統，自動跳轉至 App Store
-    window.location.href = "https://apps.apple.com/app/id6787887922";
-  } else if (/android/i.test(userAgent)) {
-    // Android 系統，自動跳轉至 Google Play
-    window.location.href = "https://play.google.com/store/apps/details?id=com.won.gamecity";
-  } else {
-    // 電腦或其他裝置，跳轉至 App 官網或備用頁面
-    window.location.href = "https://www.5win888.com";
-  }
-</script>
+  <h2>正在為您轉接至下載頁面...</h2>
+  <p>如果系統沒有自動跳轉，請點擊下方按鈕：</p>
+
+  <a id="download-link" href="#" class="btn">前往應用商店</a>
+
+  <!-- LINE / FB 內建瀏覽器提示區塊 -->
+  <div id="inapp-notice" class="notice">
+    ⚠️ 若無法開啟商店，請點擊右上角「<strong>...</strong>」，選擇「<strong>以預設瀏覽器（Safari/Chrome）開啟</strong>」。
+  </div>
+
+  <script>
+    (function () {
+      var ua = navigator.userAgent || navigator.vendor || window.opera;
+
+      // 1. 判斷 iOS (含 iPadOS 桌面模式)
+      var isiOS = /iPad|iPhone|iPod/.test(ua) || 
+                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+      // 2. 判斷 Android
+      var isAndroid = /android/i.test(ua);
+
+      // 3. 判斷是否在 LINE / FB 等 App 內建瀏覽器中
+      var isInApp = /Line|FBAN|FBAV|Instagram|MicroMessenger/i.test(ua);
+
+      // 目標網址
+      var iosUrl = "https://apps.apple.com/app/id6787887922";
+      var androidUrl = "https://play.google.com/store/apps/details?id=com.won.gamecity";
+      var fallbackUrl = "https://www.5win888.com";
+
+      var targetUrl = fallbackUrl;
+
+      if (isiOS) {
+        targetUrl = iosUrl;
+      } else if (isAndroid) {
+        targetUrl = androidUrl;
+      }
+
+      // 設定按鈕連結
+      var btn = document.getElementById("download-link");
+      btn.href = targetUrl;
+
+      // 如果在 社群 App 內建瀏覽器，顯示提示
+      if (isInApp) {
+        document.getElementById("inapp-notice").style.display = "block";
+      }
+
+      // 4. 執行跳轉（延遲 200ms 提高瀏覽器接受度）
+      setTimeout(function () {
+        window.location.replace(targetUrl);
+      }, 200);
+    })();
+  </script>
+
+</body>
+</html>
