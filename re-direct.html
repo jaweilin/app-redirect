@@ -1,0 +1,14 @@
+<script>
+  var userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+  if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+    // iOS 系統，自動跳轉至 App Store
+    window.location.href = "https://apps.apple.com/tw/app/%E9%87%91%E8%B4%8F%E8%B2%A1%E9%A3%BD/id6787887922";
+  } else if (/android/i.test(userAgent)) {
+    // Android 系統，自動跳轉至 Google Play
+    window.location.href = "https://play.google.com/store/apps/details?id=com.won.gamecity";
+  } else {
+    // 電腦或其他裝置，跳轉至 App 官網或備用頁面
+    window.location.href = "https://yourdomain.com";
+  }
+</script>
